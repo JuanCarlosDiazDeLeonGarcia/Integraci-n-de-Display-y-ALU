@@ -1,0 +1,107 @@
+int Op1 = 0;
+int Op2 = 0;
+int Op3 = 0;
+int Op4 = 0;
+int EstadoA= 0;
+int EstadoB= 0;
+
+void setup() {
+  pinMode(8, OUTPUT); // A
+  pinMode(9, OUTPUT); // B
+  pinMode(10, OUTPUT); // C
+  pinMode(11, OUTPUT); // D
+  pinMode(12, OUTPUT); // E
+  pinMode(A1, OUTPUT); // F
+  pinMode(13, OUTPUT); // G
+
+  pinMode(2, INPUT); //Op1
+  pinMode(3, INPUT); //Op2
+  pinMode(4, INPUT); //Op3
+  pinMode(5, INPUT); //Op4
+
+  pinMode(6, INPUT); //Estado A
+  pinMode(7, INPUT); //Estado B
+  
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  Op1 = digitalRead(2);
+  Op2 = digitalRead(3);
+  Op3 = digitalRead(4);
+  Op4 = digitalRead(5);
+
+  EstadoA= digitalRead(6);
+  EstadoB= digitalRead(7);
+
+  /// SUMA
+  if( (EstadoA && EstadoB) && (!Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(8,HIGH); digitalWrite(9,HIGH); digitalWrite(12,HIGH); digitalWrite(11,HIGH); digitalWrite(13,HIGH);}   /// Acarreo
+  if( (EstadoA ^ EstadoB) && (!Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH); digitalWrite(9,HIGH);}   /// Resultado
+  if( (!EstadoA && !EstadoB) && (!Op4 && !Op3 && !Op2 && Op1) ){digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);} // Cero
+
+  /// RESTA
+  if( (!EstadoA && EstadoB) && (!Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(9,HIGH); digitalWrite(10,HIGH); digitalWrite(13,HIGH);} /// Signo Negativo
+  if( (EstadoA && EstadoB) && (!Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}  /// Resultado
+  if( (EstadoA && !EstadoB) && (!Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(9,HIGH); digitalWrite(10,HIGH); } /// Uno
+  if( (!EstadoA && !EstadoB) && (!Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// MULTIPLICACION 
+  if( (EstadoA && EstadoB) && (!Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(9,HIGH); digitalWrite(10,HIGH);}   /// Resultado
+  if( (!EstadoA && EstadoB) && (!Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (EstadoA && !EstadoB) && (!Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (!EstadoA && !EstadoB) && (!Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}  
+  
+  /// DIVISION
+  if( (!EstadoA && !EstadoB) && (!Op4 && Op3 && !Op2 && !Op1) ) {{digitalWrite(8,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(13,HIGH);}} /// Error
+  if( (EstadoA && !EstadoB) && (!Op4 && Op3 && !Op2 && !Op1) ) {digitalWrite(12,HIGH); digitalWrite(13,HIGH); digitalWrite(10,HIGH);}  /// Infinito
+  if( (EstadoA && EstadoB) && (!Op4 && Op3 && !Op2 && !Op1) ) {digitalWrite(9,HIGH); digitalWrite(10,HIGH);}   /// Resultado
+  if( (!EstadoA && EstadoB) && (!Op4 && Op3 && !Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}   /// cero
+
+  /// AND
+  if( (EstadoA && EstadoB) && (!Op4 && Op3 && !Op2 && Op1) ) {digitalWrite(9,HIGH); digitalWrite(10,HIGH);}   /// Resultado
+  if( (!EstadoA && EstadoB) && (!Op4 && Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (EstadoA && !EstadoB) && (!Op4 && Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (!EstadoA && !EstadoB) && (!Op4 && Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}  
+  
+
+  /// OR
+  if( (EstadoA || EstadoB) && (!Op4 && Op3 && Op2 && !Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (!EstadoA && !EstadoB) && (!Op4 && Op3 && Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// NOT
+  if( (!EstadoA) && (!Op4 && Op3 && Op2 && Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA) && (!Op4 && Op3 && Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+
+  /// NAND
+  if( (!EstadoA && !EstadoB) && (Op4 && !Op3 && !Op2 && !Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA && !EstadoB) && (Op4 && !Op3 && !Op2 && !Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (!EstadoA && EstadoB) && (Op4 && !Op3 && !Op2 && !Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA && EstadoB) && (Op4 && !Op3 && !Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// NOR
+  if( (!EstadoA && !EstadoB) && (Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA && EstadoB) && (Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (!EstadoA && EstadoB) && (Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (EstadoA && !EstadoB) && (Op4 && !Op3 && !Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// XOR
+  if( (EstadoA ^ EstadoB) && (Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA && EstadoB) && (Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+  if( (!EstadoA && !EstadoB) && (Op4 && !Op3 && Op2 && !Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// XNOR
+  if( (EstadoA && EstadoB) && (Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (!EstadoA && !EstadoB) && (Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(9, HIGH);digitalWrite(10, HIGH);}
+  if( (EstadoA ^ EstadoB) && (Op4 && !Op3 && Op2 && Op1) ) {digitalWrite(10,HIGH);digitalWrite(11,HIGH);digitalWrite(12,HIGH); digitalWrite(A1,HIGH); digitalWrite(8,HIGH); digitalWrite(9,HIGH);}
+
+  /// Al no hacer operaciones
+  digitalWrite(8, LOW); // A
+  digitalWrite(9, LOW); // B
+  digitalWrite(10, LOW); // C
+  digitalWrite(11, LOW); // D
+  digitalWrite(12, LOW); // E
+  digitalWrite(13, LOW); // G
+  digitalWrite(A1, LOW); // F
+}

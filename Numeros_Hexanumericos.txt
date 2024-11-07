@@ -1,0 +1,75 @@
+int Op1 = 0;
+int Op2 = 0;
+int Op3 = 0;
+int Op4 = 0;
+
+
+
+void setup() {
+  pinMode(2, OUTPUT); // A
+  pinMode(3, OUTPUT); // B
+  pinMode(4, OUTPUT); // C
+  pinMode(5, OUTPUT); // D
+  pinMode(6, OUTPUT); // E
+  pinMode(7, OUTPUT); // F
+  pinMode(8, OUTPUT); // G
+
+  pinMode(9, INPUT);  //Op1
+  pinMode(10, INPUT); //Op2
+  pinMode(11, INPUT); //Op3
+  pinMode(12, INPUT); //Op4
+  
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  Op1 = digitalRead(9);
+  Op2 = digitalRead(10);
+  Op3 = digitalRead(11);
+  Op4 = digitalRead(12);
+
+  /// 0
+  if(!Op4 && !Op3 && !Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH);digitalWrite(4,HIGH); digitalWrite(5,HIGH);digitalWrite(6,HIGH); digitalWrite(7,HIGH);}
+  /// 1
+  if(!Op4 && !Op3 && !Op2 && Op1) {digitalWrite(3,HIGH); digitalWrite(4,HIGH);}
+  /// 2
+  if(!Op4 && !Op3 && Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH); digitalWrite(8,HIGH); digitalWrite(6,HIGH); digitalWrite(5,HIGH);}
+  /// 3
+  if(!Op4 && !Op3 && Op2 && Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH);digitalWrite(4,HIGH); digitalWrite(8,HIGH);digitalWrite(5,HIGH);}
+  /// 4
+  if(!Op4 && Op3 && !Op2 && !Op1) {digitalWrite(7,HIGH); digitalWrite(8,HIGH);digitalWrite(3,HIGH); digitalWrite(4,HIGH);}
+  /// 5
+  if(!Op4 && Op3 && !Op2 && Op1) {digitalWrite(2,HIGH); digitalWrite(7,HIGH); digitalWrite(8,HIGH); digitalWrite(4,HIGH); digitalWrite(5,HIGH);}
+  /// 6
+  if(!Op4 && Op3 && Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(7,HIGH); digitalWrite(6,HIGH); digitalWrite(5,HIGH); digitalWrite(4,HIGH); digitalWrite(8,HIGH);}
+  /// 7
+  if(!Op4 && Op3 && Op2 && Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH); digitalWrite(4,HIGH);}
+  /// 8
+  if(Op4 && !Op3 && !Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH); digitalWrite(4,HIGH); digitalWrite(6,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH); digitalWrite(5,HIGH);}
+  /// 9
+  if(Op4 && !Op3 && !Op2 && Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH); digitalWrite(4,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH); digitalWrite(5,HIGH);}
+  /// A
+  if(Op4 && !Op3 && Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(3,HIGH); digitalWrite(4,HIGH); digitalWrite(6,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH);}
+  /// B
+  if(Op4 && !Op3 && Op2 && Op1) {digitalWrite(4,HIGH); digitalWrite(6,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH); digitalWrite(5,HIGH);}
+  /// C
+  if(Op4 && Op3 && !Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(7,HIGH); digitalWrite(6,HIGH); digitalWrite(5,HIGH);}
+  /// D
+  if(Op4 && Op3 && !Op2 && Op1) {digitalWrite(3,HIGH); digitalWrite(4,HIGH); digitalWrite(5,HIGH); digitalWrite(6,HIGH);digitalWrite(8,HIGH);}
+  /// E
+  if(Op4 && Op3 && Op2 && !Op1) {digitalWrite(2,HIGH); digitalWrite(6,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH); digitalWrite(5,HIGH);}
+  /// F
+  if(Op4 && Op3 && Op2 && Op1) {digitalWrite(2,HIGH); digitalWrite(6,HIGH); digitalWrite(8,HIGH); digitalWrite(7,HIGH);}
+  
+
+
+  /// Al no hacer operaciones
+  digitalWrite(2, LOW); // A
+  digitalWrite(3, LOW); // B
+  digitalWrite(4, LOW); // C
+  digitalWrite(5, LOW); // D
+  digitalWrite(6, LOW); // E
+  digitalWrite(7, LOW); // F
+  digitalWrite(8, LOW); // G
+}
